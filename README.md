@@ -1,6 +1,6 @@
 # arkitectury-math
 
-Lightweight geometry and color primitives.
+Lightweight geometry and color primitives extracted from **Arkitectury**, shared across the Arkitectury engine and **Kanvas UI** (`io.kanvas.math`).
 
 ## Types
 
@@ -14,7 +14,22 @@ Lightweight geometry and color primitives.
 ## Requirements
 
 - **Java 21+**
-- **Dependencies:** `org.joml:joml:1.10.7`
+- **Dependencies:** `org.joml:joml:1.10.7`.
+
+## Installation (Gradle / JitPack)
+
+Add the JitPack repository and `arkitectury-math` dependency to your `build.gradle.kts`:
+
+```kotlin
+repositories {
+    mavenCentral()
+    maven("https://jitpack.io")
+}
+
+dependencies {
+    implementation("com.github.xw1w1:arkitectury-math:1.0.0")
+}
+```
 
 ## Building & Publishing Locally
 
@@ -23,7 +38,7 @@ Lightweight geometry and color primitives.
 ./gradlew publishToMavenLocal
 ```
 
-Published Maven coordinates:
+Local `publishToMavenLocal` coordinates:
 
 ```kotlin
 dependencies {

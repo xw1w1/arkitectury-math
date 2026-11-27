@@ -1,12 +1,23 @@
+import org.gradle.external.javadoc.CoreJavadocOptions
+
 plugins {
     `java-library`
     `maven-publish`
 }
 
+val isJitpack = System.getenv("JITPACK") == "true"
 val libraryVersion: String = providers.gradleProperty("arkitectury.math.version").get()
 
-group = "io.kanvas"
-version = libraryVersion
+group = if (isJitpack) {
+    System.getenv("GROUP")?.takeIf { it.isNotBlank() } ?: "com.github.xw1w1"
+} else {
+    providers.gradleProperty("group").orElse("io.kanvas").get()
+}
+version = if (isJitpack) {
+    System.getenv("VERSION")?.takeIf { it.isNotBlank() } ?: libraryVersion
+} else {
+    providers.gradleProperty("version").orNull?.takeUnless { it == "unspecified" } ?: libraryVersion
+}
 
 repositories {
     mavenCentral()
@@ -47,6 +58,11 @@ tasks.test {
     }
 }
 
+tasks.withType<Javadoc>().configureEach {
+    options.encoding = "UTF-8"
+    (options as? CoreJavadocOptions)?.addBooleanOption("Xdoclint:none", true)
+}
+
 tasks.withType<Jar>().configureEach {
     manifest {
         attributes(
@@ -72,7 +88,7 @@ publishing {
             artifactId = "arkitectury-math"
             pom {
                 name.set("Arkitectury Math")
-                description.set("Shared lightweight geometry and color primitives.")
+                description.set("Shared lightweight geometry and color primitives for Arkitectury and Kanvas UI.")
             }
         }
     }
